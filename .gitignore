@@ -2,7 +2,7 @@
 *.swp
 halal/whoosh_index
 halal/logs
-htdocs/*
+halal/htdocs
 bin
 include
 lib
