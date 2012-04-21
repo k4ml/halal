@@ -1,0 +1,9 @@
+*.pyc
+*.swp
+halal/whoosh_index
+halal/logs
+htdocs/*
+bin
+include
+lib
+halal/local_settings.py
