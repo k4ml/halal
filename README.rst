@@ -9,6 +9,7 @@ Make sure to have ``virtualenv``. On Ubuntu, you can install it through ``sudo a
     $ ./bin/python manage.py syncdb
     $ ./bin/python halal/scrape.py <keyword>
     $ ./bin/manage.py rebuild_index
+    $ make static # create halal/htdocs dir and run collectstatic command
 
 Deployment
 ==========
