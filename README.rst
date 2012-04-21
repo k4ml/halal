@@ -34,3 +34,7 @@ The above assume you checkout the project to ``/home/kamal/project`` when clonin
 
     $ cd /home/kamal/project
     $ git clone git://github.com/k4ml/halal.git
+
+Motivation
+==========
+https://plus.google.com/u/0/115371258798208681274/posts/cNE4H13kEg7
