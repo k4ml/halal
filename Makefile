@@ -7,3 +7,7 @@ requirements:
 
 settings:
 	cp halal/example_local_settings.py halal/local_settings.py
+
+static:
+	mkdir -p halal/htdocs
+	./bin/python manage.py collectstatic
