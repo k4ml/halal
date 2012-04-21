@@ -28,9 +28,12 @@ class ProductSearchView(SearchView):
 
         logger.debug("Total results: %d" % len(self.results))
         if not self.results.count() > 0 and self.query:
+            # jakim can only search for single keyword so we only
+            # pass the first keyword
+            keyword = self.query.split()[0]
             try:
-                logger.debug("Searching JAKIM for %s" % self.query)
-                search(self.query) # try getting result from jakim directly
+                logger.debug("Searching JAKIM for %s from query:%s" % (keyword, self.query))
+                search(keyword) # try getting result from jakim directly
             except Exception as e:
                 logger.debug("Failed searching JAKIM exc:%s" % e)
                 return response
