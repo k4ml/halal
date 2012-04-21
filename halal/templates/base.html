@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>Cari Status Halal</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Laman carian status halal untuk produk-produk tempatan. Data diambil daripada laman JAKIM dengan penambahbaikan pada fungsi carian. Juga boleh diakses melalui telefon bimbit yang mempunyai ciri pelayar web (web browser).">
+    <meta name="author" content="kamal.blogspot.com">
+
+    <!-- Le styles -->
+    <link href="/static/css/bootstrap.css" rel="stylesheet">
+    <link href="/static/css/halal.css" rel="stylesheet">
+    <style type="text/css">
+      body {
+        padding-top: 60px;
+        padding-bottom: 40px;
+      }
+    </style>
+    <link href="/static/css/bootstrap-responsive.css" rel="stylesheet">
+
+    <!-- Le HTML5 shim, for IE6-8 support of HTML5 elements -->
+    <!--[if lt IE 9]>
+      <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+
+    <!-- Le fav and touch icons -->
+    <link rel="shortcut icon" href="/static/ico/favicon.ico">
+    <link rel="apple-touch-icon-precomposed" sizes="114x114" href="/static/ico/apple-touch-icon-114-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" sizes="72x72" href="/static/ico/apple-touch-icon-72-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" href="/static/ico/apple-touch-icon-57-precomposed.png">
+  </head>
+
+  <body>
+    <div id="fb-root"></div>
+    <script>(function(d, s, id) {
+    var js, fjs = d.getElementsByTagName(s)[0];
+    if (d.getElementById(id)) return;
+    js = d.createElement(s); js.id = id;
+    js.src = "//connect.facebook.net/en_US/all.js#xfbml=1";
+    fjs.parentNode.insertBefore(js, fjs);
+    }(document, 'script', 'facebook-jssdk'));</script>
+
+    <div class="navbar navbar-fixed-top">
+      <div class="navbar-inner">
+        <div class="container">
+          <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </a>
+          <a class="brand" href="/">Cari Status Halal</a>
+          <div class="nav-collapse">
+            <ul class="nav">
+              <li class="active"><a href="/">Laman Utama</a></li>
+            </ul>
+          </div><!--/.nav-collapse -->
+        </div>
+      </div>
+    </div>
+
+    <div class="container">
+      <!-- Main hero unit for a primary marketing message or call to action -->
+      <div class="hero-unit">
+        <h1>Cari Status Halal Produk</h1>
+        <form name="search" action="." method="get">
+        <p><input type="text" name="q" size="20" value="{{ query }}" />&nbsp;Masukkan kata-kunci produk</p>
+        <input type="submit" class="btn btn-primary btn-small" value="Cari" />
+        </form>
+      </div>
+
+      <!-- Example row of columns -->
+      <div class="row">
+        <div class="span8">
+            {% block search_result %}
+            <h2>Keputusan</h2>
+            {% endblock %}
+        </div>
+        <div class="span4">
+            <div class="well sidebar-nav">
+            <div class="fb-like" data-href="http://halal.it.cx/" data-send="false" data-width="310" data-show-faces="true"></div>
+            <a href="https://www.facebook.com/CariStatusHalal">https://www.facebook.com/CariStatusHalal</a>
+            </div>
+            <div class="well sidebar-nav">
+            <h3>Tips Carian</h3>
+            Gunakan tanda tolak (-) untuk mengeluarkan kata-kunci daripada hasil carian. Contohnya: shokubutsu -original tidak akan memaparkan hasil carian berkaitan shokubutsu yang mengandungi perkataan 'original'.
+            </div>
+            <div class="well sidebar-nav">
+            <h3>Iklan</h3>
+            <a href="http://busanasuri.blogspot.com/2012/04/sutera-wangi-itali.html">Busanasuri - Kurung Pahang & Sutera Wangi Itali</a><br />
+            <a href="http://busanasuri.blogspot.com/2012/04/baju-kurung-pahang-cotton.html">Busanasuri - Baju Kurung Pahang Cotton</a><br />
+            <a href="http://khadijahgani.blogspot.com/2011/03/coklat.html">Aneka Coklat</a>
+            </div>
+        </div>
+      </div>
+      <hr>
+
+      <footer>
+        <p>&copy; kamal.blogspot.com 2012</p>
+        <p>Laman ini disediakan untuk rujukan semata-mata. Pemilik tidak bertangungjawab untuk memastikan ketepatan dan kesahihan maklumat yang disediakan. Sekiranya terdapat sebarang percanggahan dengan maklumat yang disediakan oleh pihak JAKIM, maklumat JAKIM harus dianggap lebih tepat. Pemilik tidak bertanggungjawab di atas kehilangan atau kerosakan disebabkan penggunaan mana-mana maklumat yang diperolehi daripada laman ini.</p>
+      </footer>
+
+    </div> <!-- /container -->
+
+    <!-- Le javascript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script src="/static/js/jquery-1.7.2.min.js"></script>
+    <script src="/static/js/bootstrap-transition.js"></script>
+    <script src="/static/js/bootstrap-alert.js"></script>
+    <script src="/static/js/bootstrap-modal.js"></script>
+    <script src="/static/js/bootstrap-dropdown.js"></script>
+    <script src="/static/js/bootstrap-scrollspy.js"></script>
+    <script src="/static/js/bootstrap-tab.js"></script>
+    <script src="/static/js/bootstrap-tooltip.js"></script>
+    <script src="/static/js/bootstrap-popover.js"></script>
+    <script src="/static/js/bootstrap-button.js"></script>
+    <script src="/static/js/bootstrap-collapse.js"></script>
+    <script src="/static/js/bootstrap-carousel.js"></script>
+    <script src="/static/js/bootstrap-typeahead.js"></script>
+
+    <script>
+    var showed = false;
+    $("#tambah-pasar-malam").hide();
+    function show() {
+        if (showed == false) {
+            $("#tambah-pasar-malam").show();
+            showed = true;
+        }
+        else {
+            $("#tambah-pasar-malam").hide();
+            showed = false;
+        }
+        return false;
+    }
+
+    function tutup() {
+        $("#tambah-pasar-malam").hide();
+        showed = false;
+    }
+    </script>
+
+  </body>
+</html>
