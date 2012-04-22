@@ -1,3 +1,5 @@
+Live site - http://halal.it.cx/
+
 Getting Started
 ===============
 Make sure to have ``virtualenv``. On Ubuntu, you can install it through ``sudo apt-get install python-virtualenv``. In the root directory::
