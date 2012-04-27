@@ -37,36 +37,23 @@ class ProductSearchView(SearchView):
         self.form_class = SearchForm
         self.template = 'search.html'
 
-    def __call__(self, request):
-        response = super(ProductSearchView, self).__call__(request)
-        logger.info('Test logging')
-
-        logger.debug("Total results: %d" % len(self.results))
-        if not self.results.count() > 0 and self.query:
-            # jakim can only search for single keyword so we only
-            # pass the first keyword
-            keyword = self.query.split()[0]
-            try:
-                logger.debug("Searching JAKIM for %s from query:%s" % (keyword, self.query))
-                search(keyword) # try getting result from jakim directly
-            except Exception as e:
-                logger.debug("Failed searching JAKIM exc:%s" % e)
-                return response
-            else:
-                return redirect(self.request.get_full_path())
-
-        logger.debug("Results found")
-        kw_obj, kw_created = Keyword.objects.get_or_create(name=self.query)
-        if kw_obj and not kw_created:
-            kw_obj.count = F('count') + 1
-            kw_obj.save()
-
-        return response
-
     def extra_context(self):
         extra = super(ProductSearchView, self).extra_context()
         qs = Keyword.objects.all().order_by('-modified')
         extra['latest_searches'] = qs[:10]
+        result_count = self.results.count()
+
+        if self.query:
+            kw_obj, kw_created = Keyword.objects.get_or_create(name=self.query)
+            if not kw_created:
+                kw_obj.count = F('count') + 1
+
+            if result_count == 0 and not kw_obj.scrapped:
+                extra['messages'] = 'Dalam process mendapatkan data daripada laman JAKIM. Sila cuba sebentar lagi'
+            if result_count == 0 and kw_obj.scrapped:
+                extra['messages'] = ''
+
+            kw_obj.save()
 
         return extra
 

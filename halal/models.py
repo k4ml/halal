@@ -38,6 +38,7 @@ class Keyword(models.Model):
     count = models.IntegerField(default=1)
     created = models.DateTimeField(auto_now_add=True)
     modified = models.DateTimeField(auto_now=True)
+    scrapped = models.BooleanField(default=False)
 
     def __unicode__(self):
         return u"%s" % self.name

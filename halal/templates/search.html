@@ -9,7 +9,7 @@
             <span class="small">Tarikh tamat: {{ result.object.expired|date:'d-m-Y' }} <a href="{{ result.object.source.url }}">Sumber JAKIM</a></span>
         </p>
     {% empty %}
-        <p>No results found.</p>
+        <p>Tiada keputusan ditemui. {% if messages %} {{ messages }} {% endif %}</p>
     {% endfor %}
 
     {% if page.has_previous or page.has_next %}
