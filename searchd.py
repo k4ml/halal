@@ -3,9 +3,12 @@ import time
 
 os.environ['DJANGO_SETTINGS_MODULE'] = 'halal.local_settings'
 
+from django.db import transaction
+
 from halal.models import Keyword
 from halal.scrape import search
 
+@transaction.commit_on_success
 def search_keywords(args):
     print 'Start loop %d' % time.time()
     for keyword in Keyword.objects.filter(scrapped=False):
@@ -14,11 +17,11 @@ def search_keywords(args):
             print "Searching for %s" % keyword_part[0]
             search(keyword_part[0])
         except Exception as e:
-            print e
-        else:
-            keyword.scrapped = True
-            keyword.save()
-            print "Searching for %s done" % keyword_part[0]
+            print e, keyword
+
+        keyword.scrapped = True
+        keyword.save()
+        print "Searching for %s done" % keyword_part[0]
 
     return True
 
