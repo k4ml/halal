@@ -1,4 +1,5 @@
 import os
+import time
 
 os.environ['DJANGO_SETTINGS_MODULE'] = 'halal.local_settings'
 
@@ -6,6 +7,7 @@ from halal.models import Keyword
 from halal.scrape import search
 
 def search_keywords(args):
+    print 'Start loop %d' % time.time()
     for keyword in Keyword.objects.filter(scrapped=False):
         keyword_part = keyword.name.split()
         try:
@@ -16,10 +18,14 @@ def search_keywords(args):
         else:
             keyword.scrapped = True
             keyword.save()
+            print "Searching for %s done" % keyword_part[0]
+
+    return True
 
 def main(args=None):
     while True:
         search_keywords(args)
+        time.sleep(10)
 
 if __name__ == '__main__':
     import signal
