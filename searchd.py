@@ -14,9 +14,10 @@ def search_keywords(args):
     for keyword in Keyword.objects.filter(scrapped=False):
         keyword_part = keyword.name.split()
         try:
-            print "Searching for %s" % keyword_part[0]
-            search(keyword_part[0])
-            search(keyword_part[0], 'M')
+            first_kw = keyword_part[0].strip('"')
+            print "Searching for %s" % first_kw
+            search(first_kw)
+            search(first_kw, 'M')
         except Exception as e:
             print e, keyword
 
