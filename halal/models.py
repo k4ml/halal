@@ -27,10 +27,15 @@ class Scrap(models.Model):
     modified = models.DateTimeField(auto_now=True)
 
 class Product(models.Model):
+    CATEGORY = (
+        (1, 'Produk'),
+        (2, 'Premis'),
+    )
     name = models.TextField()
     expired = models.DateTimeField()
     created = models.DateTimeField(auto_now_add=True)
     modified = models.DateTimeField(auto_now=True)
+    category = models.IntegerField(choices=CATEGORY)
     source = models.ForeignKey(Scrap)
 
 class Keyword(models.Model):

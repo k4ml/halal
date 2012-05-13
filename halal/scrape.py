@@ -69,62 +69,66 @@ def get_company(elm):
 
 class NoResult(Exception): pass
 
-def parse_product(page_content, scrap_obj):
+def parse_item(category, elm, scrap_obj):
+    data_row_counter = 0
+    has_result = False
+    for idx, td in enumerate(elm.cssselect("tr")):
+        if idx < 3: continue
+        #logger.debug('Row with data found')
+        data_row_counter += 1
+        row_data = strip_tags(td.text_content()).strip()
+        row_data_part = row_data.split('\n')
+
+        try:
+            bil = row_data_part[0].strip()
+            product = row_data_part[2].strip().replace("\t", '')
+            product = ' '.join(product.split()) # remove whitespace
+            expired = row_data_part[5].strip()
+        except Exception as e:
+            logger.debug('Failed extracting data exception:%s' % e)
+            continue
+
+        #print bil, product, expired
+        logger.debug('Got data product:%s, expired:%s' % (product, expired))
+        try:
+            expired_dt = datetime.datetime.strptime(expired, '%d/%m/%Y')
+        except Exception as e:
+            logger.debug('Failed getting expired_dt exception:%s' % e)
+            continue
+
+        if Product.objects.filter(name=product).exists():
+            logger.debug("Product already exists - %s" % product)
+            continue
+
+        pobj = Product(name=product, expired=expired_dt, source=scrap_obj)
+        pobj.category = category
+        pobj.save()
+        has_result = True
+        print 'Saved %s' % pobj.name
+
+    return has_result
+
+def find_item_data(page_content, scrap_obj):
     root = lxml.html.fromstring(page_content)
     outer_table = root.cssselect("table")[1]
-    found = False
     has_result = False
     for tr in outer_table.cssselect("tr"):
         for td in tr.cssselect("td"):
             if td.text_content().strip() == 'SENARAI PRODUK':
-                found = True
-                break
-        if found:
-            data_row_counter = 0
-            for idx, td in enumerate(tr.cssselect("tr")):
-                if idx < 3: continue
-                #logger.debug('Row with data found')
-                data_row_counter += 1
-                row_data = strip_tags(td.text_content()).strip()
-                row_data_part = row_data.split('\n')
+                has_result = parse_item(1, tr, scrap_obj)
+                break;
+            if td.text_content().strip() == 'SENARAI PREMIS MAKANAN':
+                has_result = parse_item(2, tr, scrap_obj)
+                break;
 
-                try:
-                    bil = row_data_part[0].strip()
-                    product = row_data_part[2].strip().replace("\t", '')
-                    product = ' '.join(product.split()) # remove whitespace
-                    expired = row_data_part[5].strip()
-                except Exception as e:
-                    logger.debug('Failed extracting data exception:%s' % e)
-                    continue
-
-                #print bil, product, expired
-                logger.debug('Got data product:%s, expired:%s' % (product, expired))
-                try:
-                    expired_dt = datetime.datetime.strptime(expired, '%d/%m/%Y')
-                except Exception as e:
-                    logger.debug('Failed getting expired_dt exception:%s' % e)
-                    continue
-
-                if Product.objects.filter(name=product).exists():
-                    logger.debug("Product already exists - %s" % product)
-                    continue
-
-                pobj = Product(name=product, expired=expired_dt, source=scrap_obj)
-                pobj.save()
-                has_result = True
-                #print 'Saved %s' % pobj.name
-
-    if not has_result:
-        raise NoResult("No results found")
-
-    scrap_obj.has_result = True
+    scrap_obj.has_result = has_result
     scrap_obj.save()
 
 @transaction.commit_on_success
-def search(keyword):
+def search(keyword, category='P'):
     logger.debug('Start searching %s' % keyword)
     base_url = 'http://www.halal.gov.my/ehalal'
-    url = "%s/directory_standalone.php?type=P&cari=%s" % (base_url, keyword)
+    url = "%s/directory_standalone.php?type=%s&cari=%s" % (base_url, category, keyword)
     html = requests.get(url).content
     root = lxml.html.fromstring(html)
     found_pages = []
@@ -138,13 +142,13 @@ def search(keyword):
         scrap_obj, created = Scrap.objects.get_or_create(url=url)
         scrap_obj.content = html
         if idx == 0: # we already have the first page
-            parse_product(html, scrap_obj)
+            find_item_data(html, scrap_obj)
             continue
 
         try:
             url = '%s/%s' % (base_url, found_page_url)
             html = requests.get(url).content
-            parse_product(html, scrap_obj)
+            find_item_data(html, scrap_obj)
             print 'parsing product from %s' % url
         except Exception as e:
             logger.debug('Failed parsing %s exception:%s' % (url, e))
@@ -152,6 +156,11 @@ def search(keyword):
 
 if __name__ == '__main__':
     try:
-        search(sys.argv[1])
+        search(sys.argv[1], 'P')
+    except Exception as e:
+        print e
+
+    try:
+        search(sys.argv[1], 'M')
     except Exception as e:
         print e

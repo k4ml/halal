@@ -16,6 +16,7 @@ def search_keywords(args):
         try:
             print "Searching for %s" % keyword_part[0]
             search(keyword_part[0])
+            search(keyword_part[0], 'M')
         except Exception as e:
             print e, keyword
 
