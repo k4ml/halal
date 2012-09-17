@@ -30,6 +30,7 @@ def search_keywords(args):
 def main(args=None):
     while True:
         search_keywords(args)
+        sys.stdout.flush()
         time.sleep(10)
 
 if __name__ == '__main__':
