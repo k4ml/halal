@@ -11,3 +11,6 @@ settings:
 static:
 	mkdir -p halal/htdocs
 	./bin/python manage.py collectstatic
+
+logs:
+	mkdir -p halal/logs
